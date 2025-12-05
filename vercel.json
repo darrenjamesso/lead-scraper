@@ -1,19 +1,10 @@
 {
-    "buildCommand": "cd client && npm install && npm run build",
-    "outputDirectory": "client/dist",
-    "rewrites": [
-        {
-            "source": "/api/:path*",
-            "destination": "/server/server.js"
-        },
-        {
-            "source": "/:path*",
-            "destination": "/index.html"
-        }
-    ],
-    "functions": {
-        "server/server.js": {
-            "runtime": "nodejs20.x"
-        }
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/dist",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api"
     }
+  ]
 }
