@@ -77,7 +77,7 @@ export default function LeadScraperApp() {
     });
 
     // Use EventSource for progressive loading
-    const eventSource = new EventSource(`http://localhost:3000/api/search-stream?${params}`);
+    const eventSource = new EventSource(`/api/search-stream?${params}`);
 
     eventSource.onmessage = (event) => {
       console.log('SSE Message:', event.data);
@@ -122,7 +122,7 @@ export default function LeadScraperApp() {
 
     eventSource.onerror = (error) => {
       console.error('SSE Error:', error);
-      setError('Cannot connect to backend server. Make sure the server is running at http://localhost:3000\n\nTo start the server:\n1. Open terminal in the backend folder\n2. Run: npm install\n3. Run: npm start');
+      setError('Cannot connect to backend server. Please try again later.');
       eventSource.close();
       setIsSearching(false);
       setSearchStatus('');

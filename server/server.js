@@ -537,7 +537,7 @@ Example 3: "Fintech partnerships announced this week"
 Example 4: "Form D filings in last 48 hours"
 - Primary signal: REGULATORY_FILING
 - Timeframe: 48h
-- Search for: SEC Form D filings + dates after ${new Date(Date.now() - 48*60*60*1000).toISOString().split('T')[0]}
+- Search for: SEC Form D filings + dates after ${new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0]}
 - Output: signalType "regulatory_filing", signalData with filingType, amount, regType, agency
 
 Example 5: "Restaurant expansions in California"
@@ -551,7 +551,7 @@ Example 6: "Tech acquisitions last 30 days"
 - Primary signal: ACQUISITION
 - Industry: Technology
 - Timeframe: 30d
-- Search for: M&A announcements + tech companies + dates after ${new Date(Date.now() - 30*24*60*60*1000).toISOString().split('T')[0]}
+- Search for: M&A announcements + tech companies + dates after ${new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 - Output: signalType "acquisition", signalData with type, target, value, reason
 
 Example 7: "SaaS companies in NYC that are hiring engineers"
@@ -575,7 +575,7 @@ Example 9: "Reg D filings last 48 hours"
 - Primary signal: REGULATORY
 - Timeframe: 48h
 - Search for: All Form D filings from last 2 days
-- Cutoff date: ${new Date(Date.now() - 48*60*60*1000).toISOString().split('T')[0]}
+- Cutoff date: ${new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0]}
 - Output: signalType "regulatory_filing" with complete filing details
 - Must include: filingDate, offeringAmount, company location
 
@@ -583,7 +583,7 @@ Example 10: "Form D filings last week"
 - Primary signal: REGULATORY
 - Timeframe: 7d
 - Search for: All Form D filings from past 7 days
-- Cutoff date: ${new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]}
+- Cutoff date: ${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 - Output: signalType "regulatory_filing" with filing information
 - Sort by: Most recent first
 
@@ -591,7 +591,7 @@ Example 11: "Recent SEC filings"
 - Primary signal: REGULATORY
 - Timeframe: 30d (default for "recent")
 - Search for: Recent Form D and other SEC filings
-- Cutoff date: ${new Date(Date.now() - 30*24*60*60*1000).toISOString().split('T')[0]}
+- Cutoff date: ${new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 - Output: Mix of Form D, S-1, 8-K filings
 - Focus on: Form D (most common)
 
@@ -747,7 +747,7 @@ If "Any Time" or empty:
 
 Query: "Reg D filings last 48 hours"
 Timeframe: Auto-detected as "48h"
-→ Find ONLY companies that filed in the last 48 hours (after ${new Date(Date.now() - 48*60*60*1000).toISOString().split('T')[0]})
+→ Find ONLY companies that filed in the last 48 hours (after ${new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0]})
 
 Query: "AI companies"
 Timeframe: "Any Time"
@@ -903,12 +903,12 @@ ${isSearchingForFunding || filters.fundingStage ? '- Funding Date: 2024 or 2025 
 **FUNDING DATA - OPTIONAL:**
 
 ${isSearchingForFunding || filters.fundingStage ?
-`This IS a funding-focused search:
+                    `This IS a funding-focused search:
   ✅ Prioritize companies with funding information
   ✅ Include funding date, amount, stage
   ✅ Focus on recent funding (2024-2025)
   ✅ Companies without funding data should be excluded` :
-`This is NOT a funding-focused search:
+                    `This is NOT a funding-focused search:
   ✅ Find companies that match other criteria (industry, location, type)
   ✅ Funding information is optional - can be "N/A"
   ✅ Do not filter out companies without funding data
@@ -1236,25 +1236,25 @@ Regulatory filings are MOST valuable when fresh (24-48 hours old).
 **Handling time-sensitive filing searches:**
 
 Query: "Reg D filings last 24 hours"
-  → Filing date MUST be: ${new Date(Date.now() - 24*60*60*1000).toISOString().split('T')[0]} or later
+  → Filing date MUST be: ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0]} or later
   → Today is: ${new Date().toISOString().split('T')[0]}
   → Be EXTREMELY strict with dates
   → Exclude anything older than 24 hours
 
 Query: "Reg D filings last 48 hours"
-  → Filing date MUST be: ${new Date(Date.now() - 48*60*60*1000).toISOString().split('T')[0]} or later
+  → Filing date MUST be: ${new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0]} or later
   → Strictly enforce 48-hour window
   → Use precise date math
 
 Query: "Form D filings last week"
   → Filing date MUST be within last 7 days
-  → Cutoff: ${new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]}
+  → Cutoff: ${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
   → Check every filing date
 
 Query: "Recent Reg D filings" (vague timeframe)
   → Default to last 30 days
   → Sort by filing date (newest first)
-  → Cutoff: ${new Date(Date.now() - 30*24*60*60*1000).toISOString().split('T')[0]}
+  → Cutoff: ${new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 
 **CRITICAL: Date verification for filings**
 
@@ -1433,24 +1433,24 @@ Match on:
 Timeframe: ${filters.timeframe || 'Any Time'}
 
 ${['24h', '48h', '7d', '30d', '90d'].includes(filters.timeframe) ?
-`When timeframe is recent (24h-90d):
+                    `When timeframe is recent (24h-90d):
   - Use search terms: "last 24 hours", "last week", "today", "yesterday", "recent"
   - Look for: news articles, press releases, announcements with recent dates
   - Prioritize sources: Company blogs, press releases, news sites with timestamps
   - Verify dates carefully before including
   - Today's date: ${new Date().toISOString().split('T')[0]}` :
-filters.timeframe === 'before-2015' ?
-`When timeframe is "before-2015":
+                    filters.timeframe === 'before-2015' ?
+                      `When timeframe is "before-2015":
   - Use search terms: "established", "founded", "since", "history", "decades in business"
   - Look for: Company histories, about pages, timeline mentions
   - Prioritize sources: Company websites, business directories, historical records
   - Verify founding year before including` :
-filters.timeframe && filters.timeframe !== 'Any Time' ?
-`When timeframe is specific years (${filters.timeframe}):
+                      filters.timeframe && filters.timeframe !== 'Any Time' ?
+                        `When timeframe is specific years (${filters.timeframe}):
   - Include the year in search terms
   - Filter results to only those years
   - Verify year matches before including` :
-`When timeframe is "Any Time":
+                        `When timeframe is "Any Time":
   - Use broad search terms without date restrictions
   - Accept results from any time period
   - Do NOT exclude based on age or date
@@ -1461,30 +1461,30 @@ filters.timeframe && filters.timeframe !== 'Any Time' ?
 Company Age: ${filters.companyAge || 'Any'}
 
 ${filters.companyAge === 'new' ?
-`When searching for NEW companies (0-2 years):
+                    `When searching for NEW companies (0-2 years):
   ✅ Search terms: "founded 2023", "founded 2024", "launched 2024", "new startup", "recently launched"
   ✅ Sources: Startup news (TechCrunch launches), Product Hunt, Y Combinator batches
   ✅ Look for: Launch announcements, first funding rounds, "founded by" articles
   ✅ Verify: Founded 2023 or later` :
-filters.companyAge === 'growing' ?
-`When searching for GROWING companies (3-5 years):
+                    filters.companyAge === 'growing' ?
+                      `When searching for GROWING companies (3-5 years):
   ✅ Search terms: "founded 2020", "founded 2021", "founded 2022", "scale-up", "growing startup"
   ✅ Sources: Growth stage news, Series A/B announcements
   ✅ Look for: Expansion news, team growth, new markets
   ✅ Verify: Founded 2020-2022` :
-filters.companyAge === 'established' ?
-`When searching for ESTABLISHED companies (6-10 years):
+                      filters.companyAge === 'established' ?
+                        `When searching for ESTABLISHED companies (6-10 years):
   ✅ Search terms: "founded 2015", "established", "proven", "since 2017"
   ✅ Sources: Industry publications, company about pages, business directories
   ✅ Look for: Company histories, milestone announcements, "celebrating X years"
   ✅ Verify: Founded 2015-2019` :
-filters.companyAge === 'mature' ?
-`When searching for MATURE companies (10+ years):
+                        filters.companyAge === 'mature' ?
+                          `When searching for MATURE companies (10+ years):
   ✅ Search terms: "founded 2014", "founded 2010", "legacy", "veteran", "decades in business", "since 2005"
   ✅ Sources: Company websites (About/History pages), BBB listings, industry associations, business directories
   ✅ Look for: "Established in [year]", "X years of experience", anniversary announcements
   ✅ Verify: Founded 2014 or earlier` :
-`When NO age specified (Any):
+                          `When NO age specified (Any):
   ✅ Include companies of all ages
   ✅ Mix new startups with mature businesses
   ✅ Do NOT favor one age over another`}
@@ -1492,14 +1492,14 @@ filters.companyAge === 'mature' ?
 **SOURCES BY COMPANY AGE:**
 
 ${filters.companyAge === 'new' ?
-`For NEW companies (0-2 years):
+                    `For NEW companies (0-2 years):
   - Product Hunt (product launches)
   - Y Combinator (batch announcements)
   - TechCrunch (startup launches)
   - BetaList (new startups)
   - Hacker News (Show HN posts)` :
-['established', 'mature'].includes(filters.companyAge) ?
-`For ESTABLISHED/MATURE companies (6+ years):
+                    ['established', 'mature'].includes(filters.companyAge) ?
+                      `For ESTABLISHED/MATURE companies (6+ years):
   - Better Business Bureau (BBB) listings
   - Dun & Bradstreet directory
   - Industry association directories
@@ -1509,7 +1509,7 @@ ${filters.companyAge === 'new' ?
   - Trade association directories
   - Inc. 5000 archives
   - Forbes lists (various years)` :
-`For ALL ages:
+                      `For ALL ages:
   - Crunchbase (shows founded date)
   - PitchBook (shows founded date)
   - Company websites (About/History sections)`}
@@ -1526,11 +1526,11 @@ To find enough leads, search broadly within criteria:
 **FUNDING FIELDS - WHEN N/A IS ACCEPTABLE:**
 
 ${isSearchingForFunding || filters.fundingStage ?
-`This IS a funding-focused search:
+                    `This IS a funding-focused search:
   - fundingAmount: Must have value (not N/A)
   - fundingStage: Must have value (not N/A)
   - fundingDate: Must have value (not N/A)` :
-`This is NOT a funding-focused search:
+                    `This is NOT a funding-focused search:
   - fundingAmount: "N/A" is perfectly acceptable
   - fundingStage: "N/A" is perfectly acceptable
   - fundingDate: "N/A" is perfectly acceptable
@@ -2328,16 +2328,16 @@ Before submitting, verify:
 - [ ] I did NOT apply hidden date filters when "Any Time" was selected
 
 ${['24h', '48h', '7d', '30d', '90d'].includes(filters.timeframe) ?
-`If timeframe is "${filters.timeframe}" and today is ${new Date().toISOString().split('T')[0]}:
+                    `If timeframe is "${filters.timeframe}" and today is ${new Date().toISOString().split('T')[0]}:
   → Cutoff date is ${new Date(Date.now() - (filters.timeframe === '24h' ? 1 : filters.timeframe === '48h' ? 2 : filters.timeframe === '7d' ? 7 : filters.timeframe === '30d' ? 30 : 90) * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
   → ALL results must have activity after this cutoff
   → If ANY result is older → I MUST REMOVE IT` :
-filters.timeframe === 'before-2015' ?
-`If timeframe is "Before 2015":
+                    filters.timeframe === 'before-2015' ?
+                      `If timeframe is "Before 2015":
   → ALL companies must be founded before 2015
   → Look for founding years: 2014, 2010, 2000, 1995, etc.
   → If ANY company is founded 2015 or later → I MUST REMOVE IT` :
-`If timeframe is "Any Time":
+                      `If timeframe is "Any Time":
   → NO restrictions on dates
   → I have NOT excluded based on age
   → I have mixed old and new companies freely`}
@@ -2370,9 +2370,9 @@ filters.timeframe === 'before-2015' ?
 Scenario 1: User searches "Reg D filings last 48 hours"
 - Timeframe: 48h
 - Today: ${new Date().toISOString().split('T')[0]}
-- Cutoff: ${new Date(Date.now() - 48*60*60*1000).toISOString().split('T')[0]}
-- CORRECT: Return companies that filed on ${new Date(Date.now() - 24*60*60*1000).toISOString().split('T')[0]} or ${new Date().toISOString().split('T')[0]}
-- WRONG: Return companies that filed on ${new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]}
+- Cutoff: ${new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0]}
+- CORRECT: Return companies that filed on ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0]} or ${new Date().toISOString().split('T')[0]}
+- WRONG: Return companies that filed on ${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 
 Scenario 2: User searches "AI companies" with no timeframe
 - Timeframe: Any Time
@@ -2386,9 +2386,9 @@ Scenario 3: User searches "Established restaurants"
 
 Scenario 4: User searches "Product launches" + Timeframe: "Last 7 Days"
 - Today: ${new Date().toISOString().split('T')[0]}
-- Cutoff: ${new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]}
-- CORRECT: Return products launched ${new Date(Date.now() - 6*24*60*60*1000).toISOString().split('T')[0]} to ${new Date().toISOString().split('T')[0]}
-- WRONG: Return products launched ${new Date(Date.now() - 30*24*60*60*1000).toISOString().split('T')[0]}
+- Cutoff: ${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+- CORRECT: Return products launched ${new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} to ${new Date().toISOString().split('T')[0]}
+- WRONG: Return products launched ${new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 
 Scenario 5: User searches "SaaS companies" + Timeframe: "2020-2023"
 - CORRECT: Return SaaS companies founded in 2020, 2021, 2022, 2023
@@ -2549,10 +2549,10 @@ If query is "plumbing companies Texas":
 ${!isSearchingForStartups && !isSearchingForFunding ? '⚠️ This is a GENERAL business search - DO NOT require startup status or funding!' : ''}
 
 CRITICAL: ${batchSize} companies, all criteria matched, diverse sources, verified data.`
-            }
-          ]
-        })
-      });
+              }
+            ]
+          })
+        });
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -2682,7 +2682,7 @@ CRITICAL: ${batchSize} companies, all criteria matched, diverse sources, verifie
     if (uniqueLeads.length > 0) {
       console.log('  Sample lead:', uniqueLeads[0].companyName);
     }
-    console.log('=' .repeat(80) + '\n');
+    console.log('='.repeat(80) + '\n');
 
     return res.json({
       success: true,
@@ -3260,11 +3260,16 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Lead Scraper API is running' });
 });
 
-app.listen(PORT, () => {
-  console.log(`\n🚀 Lead Scraper Backend Server running on http://localhost:${PORT}`);
-  console.log(`\nEndpoints:`);
-  console.log(`  POST http://localhost:${PORT}/api/search-leads (batch mode)`);
-  console.log(`  GET  http://localhost:${PORT}/api/search-stream (progressive SSE)`);
-  console.log(`  GET  http://localhost:${PORT}/api/health`);
-  console.log(`\n✅ Ready to receive search requests\n`);
-});
+// Start server only if running directly (not imported by Vercel)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n🚀 Lead Scraper Backend Server running on http://localhost:${PORT}`);
+    console.log(`\nEndpoints:`);
+    console.log(`  POST http://localhost:${PORT}/api/search-leads (batch mode)`);
+    console.log(`  GET  http://localhost:${PORT}/api/search-stream (progressive SSE)`);
+    console.log(`  GET  http://localhost:${PORT}/api/health`);
+    console.log(`\n✅ Ready to receive search requests\n`);
+  });
+}
+
+module.exports = app;
