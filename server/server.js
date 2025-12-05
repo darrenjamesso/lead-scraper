@@ -2763,11 +2763,11 @@ app.get('/api/search-stream', async (req, res) => {
     }
 
     console.log('Enhanced query:', enhancedQuery);
-    console.log('Starting 5 batches in parallel...');
+    console.log('Starting 2 batches in parallel (reduced for Vercel timeout)...');
 
     // Generate leads in batches for progressive loading
     const batchSize = 10;
-    const numBatches = 5;
+    const numBatches = 2; // Reduced from 5 to fit in Vercel's 10s timeout
 
     // Helper function to perform Tavily search
     const performSearch = async (query) => {

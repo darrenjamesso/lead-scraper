@@ -47,86 +47,55 @@ export default function LeadScraperApp() {
     { text: 'Early-stage SaaS', query: 'Early-stage SaaS' }
   ];
 
-  const searchLeads = () => {
+  const searchLeads = async () => {
+    if (!searchQuery.trim()) {
+      setError('Please enter a search query');
+      return;
+    }
+
     setIsSearching(true);
     setError('');
     setLeads([]);
     setProgress(0);
-    setSearchStatus('Connecting to backend server...');
+    setSearchStatus('Searching for leads... This may take up to 30 seconds.');
 
-    // Build the search query with filters
-    let enhancedQuery = searchQuery || 'recently funded startups';
+    try {
+      console.log('Sending search request to /api/search-leads');
 
-    if (filters.fundingStage) {
-      enhancedQuery += ` ${filters.fundingStage}`;
-    }
-    if (filters.industry) {
-      enhancedQuery += ` ${filters.industry}`;
-    }
-    if (filters.country) {
-      enhancedQuery += ` ${filters.country}`;
-    }
+      const response = await fetch('/api/search-leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          searchQuery: searchQuery,
+          filters: filters
+        })
+      });
 
-    console.log('Searching with query:', enhancedQuery);
-    setSearchStatus('Searching for leads... Results will appear as they arrive!');
+      console.log('Response status:', response.status);
 
-    // Build query parameters
-    const params = new URLSearchParams({
-      searchQuery: enhancedQuery,
-      filters: JSON.stringify(filters)
-    });
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
 
-    // Use EventSource for progressive loading
-    const eventSource = new EventSource(`/api/search-stream?${params}`);
+      const data = await response.json();
+      console.log('Received data:', data);
 
-    eventSource.onmessage = (event) => {
-      console.log('SSE Message:', event.data);
-
-      // Check for completion signal
-      if (event.data === '[DONE]') {
-        console.log('Search completed!');
-        eventSource.close();
-        setIsSearching(false);
-        setSearchStatus('');
+      if (data.success && data.leads) {
+        setLeads(data.leads);
         setProgress(100);
-        return;
+        console.log('Set leads:', data.leads.length);
+      } else {
+        setError(data.error || 'No leads found');
       }
-
-      try {
-        const data = JSON.parse(event.data);
-
-        // Check for errors
-        if (data.error) {
-          throw new Error(data.error);
-        }
-
-        // Process batch of leads
-        if (data.leads && Array.isArray(data.leads)) {
-          console.log(`Batch ${data.batch} received: ${data.leads.length} leads`);
-
-          // Add new leads to existing leads
-          setLeads(prevLeads => [...prevLeads, ...data.leads]);
-
-          // Update progress
-          setProgress(data.progress);
-          setSearchStatus(`Loading leads... ${data.progress}% complete (${data.leads.length} new leads)`);
-        }
-      } catch (error) {
-        console.error('Error parsing SSE data:', error);
-        setError(`Failed to process results: ${error.message}`);
-        eventSource.close();
-        setIsSearching(false);
-        setSearchStatus('');
-      }
-    };
-
-    eventSource.onerror = (error) => {
-      console.error('SSE Error:', error);
-      setError('Cannot connect to backend server. Please try again later.');
-      eventSource.close();
+    } catch (error) {
+      console.error('Search failed:', error);
+      setError('Cannot connect to backend. Please try again later.');
+    } finally {
       setIsSearching(false);
       setSearchStatus('');
-    };
+    }
   };
 
   const handleFilterChange = (filterName, value) => {
